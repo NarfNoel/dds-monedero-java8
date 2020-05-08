@@ -34,11 +34,15 @@ public class Cuenta {
 	  public void poner(double cuanto) {
 		  validarNoNegativo(cuanto);
 	
-		  if (getDepositos().stream().count() >= 3) {
+		  if (!leQuedanDepositos()) {
 			  throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
 		  }
 	
 		  agregarDeposito(new Deposito(LocalDate.now(), cuanto));
+	  }
+
+	  private boolean leQuedanDepositos() {
+		  return getDepositos().stream().count() < 3;
 	  }
 	
 	  public void sacar(double cuanto) {
