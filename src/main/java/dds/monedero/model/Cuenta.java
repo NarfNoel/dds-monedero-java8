@@ -38,7 +38,9 @@ public class Cuenta {
 			  throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
 		  }
 	
-		  agregarDeposito(new Deposito(LocalDate.now(), cuanto));
+		  Deposito deposito = new Deposito(LocalDate.now(), cuanto);
+		  agregarDeposito(deposito);
+		  efectuarMovimiento(deposito);
 	  }
 
 	  private boolean leQuedanDepositos() {
@@ -49,7 +51,13 @@ public class Cuenta {
 		  validarNoNegativo(cuanto);
 		  chequearPuedeSacar(cuanto);
 		  chequearLimite(cuanto);
-		  agregarExtraccion(new Extraccion(LocalDate.now(), cuanto));
+		  Extraccion extraccion = new Extraccion(LocalDate.now(), cuanto);
+		  agregarExtraccion(extraccion);
+		  efectuarMovimiento(extraccion);
+	  }
+	  
+	  public void efectuarMovimiento(Movimiento movimiento){
+		  setSaldo(movimiento.calcularValor(this));
 	  }
 
 	private void chequearPuedeSacar(double cuanto) {
